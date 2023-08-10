@@ -21,7 +21,15 @@ export default class App extends Component {
     ),
     filter: PropTypes.string,
   };
-
+  componentDidMount() {
+    const contactsFromLS = JSON.parse(localStorage.getItem('contacts')) || [];
+    this.setState({ contacts: contactsFromLS });
+  }
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    } 
+  }
   addToContacts = (name, number) => {
     const { contacts } = this.state;
     if (!name || !number) {
